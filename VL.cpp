@@ -1,41 +1,52 @@
-#include "VL.h"
+#include "VLMain.h"
 
 namespace VL {
 	void VL_file::load(const std::string& VL_S_Location) {
-		UI::File* a = new UI::File(VL_S_Location);
+		std::vector<std::string>* a = new std::vector<std::string>();
+		std::fstream stream;
+		stream.open(VL_S_Location, std::ios::in);
+		if (stream.good()) {
+			std::string str;
+			while (std::getline(stream, str)) {
+				a->push_back(str);
+			}
 
-		// checking all lines
-		for (int i = 0; i < a->file.size(); i++) {
+			// checking all lines
+			for (int i = 0; i < a->size(); i++) {
 
-			std::string line = a->file[i];
+				std::string line = (*a)[i];
 
-			std::string l_name = "";
+				std::string l_name = "";
 
-			std::string l_value = "";
-			if (line.length() > 0) {
-				if (line[0] != '#') {
-					// finding '=' in line
-					/* starts with \ */
-					
-					if (line[0] == 0x5C) {
-						this->V_list[this->V_list.size()-1].value += " " + line.substr(1, line.size()-1);
-					}
-					else {
+				std::string l_value = "";
+				if (line.length() > 0) {
+					if (line[0] != '#') {
 						// finding '=' in line
-						if (line.find('=') < line.length()) {
-							int eqPos = strcspn(line.c_str(), "=");
-							l_name = line.substr(0, eqPos);
-							l_value = line.substr(eqPos + 1, line.size() - (eqPos + 1));
+						/* starts with \ */
+
+						if (line[0] == 0x5C) {
+							this->V_list[this->V_list.size() - 1].value += " " + line.substr(1, line.size() - 1);
 						}
 						else {
-							l_name = line;
+							// finding '=' in line
+							if (line.find('=') < line.length()) {
+								int eqPos = strcspn(line.c_str(), "=");
+								l_name = line.substr(0, eqPos);
+								l_value = line.substr(eqPos + 1, line.size() - (eqPos + 1));
+							}
+							else {
+								l_name = line;
+							}
+							V_list.push_back(VL_variable(l_name, l_value));
 						}
-						V_list.push_back(VL_variable(l_name, l_value));
 					}
 				}
 			}
-		}
 
+		}
+		
+		stream.close();
+	
 		delete a;
 		a = NULL;
 	}
