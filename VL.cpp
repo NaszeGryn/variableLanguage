@@ -27,6 +27,9 @@ namespace VL {
 						if (line[0] == 0x5C) {
 							this->V_list[this->V_list.size() - 1].value += " " + line.substr(1, line.size() - 1);
 						}
+						else if (line[0] == '&') {
+							this->V_list[this->V_list.size() - 1].value += "\n" + line.substr(1, line.size() - 1);
+						}
 						else {
 							// finding '=' in line
 							if (line.find('=') < line.length()) {
@@ -76,6 +79,18 @@ namespace VL {
 		return -1;
 	}
 
+	VL_variable* VL_file::getVariable(int index) {
+		if (index < V_list.size())
+			return &V_list[index];
+		return NULL;
+	}
+	VL_variable* VL_file::getVariable(const std::string& name) {
+		for (int i = 0; i < V_list.size(); i++) {
+			if (V_list[i].title == name)
+				return &V_list[i];
+		}
+		return NULL;
+	}
 
 	// ======================= HANDLER =======================
 
@@ -104,5 +119,18 @@ namespace VL {
 				return i;
 		}
 		return -1;
+	}
+
+	VL_variable* VL_Handler::getVariable(int index) {
+		if (index < V_list.size())
+			return &V_list[index];
+		return NULL;
+	}
+	VL_variable* VL_Handler::getVariable(const std::string& name) {
+		for (int i = 0; i < V_list.size(); i++) {
+			if (V_list[i].title == name)
+				return &V_list[i];
+		}
+		return NULL;
 	}
 }
