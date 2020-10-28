@@ -1,9 +1,16 @@
 #include "VLMain.h"
 
 namespace VL {
-	void VL_file::load(const std::string& VL_S_Location) {
+	void VL_file::load(const std::string& VL_S_Location, const std::string& Name = "") {
 		std::vector<std::string>* a = new std::vector<std::string>();
 		std::fstream stream;
+		if (Name == "") {
+			this->filename = VL_S_Location;
+		}
+		else {
+			this->filename = Name;
+		}
+
 		stream.open(VL_S_Location, std::ios::in);
 		if (stream.good()) {
 			std::string str;
@@ -57,6 +64,14 @@ namespace VL {
 
 	// ----- search functions -----
 
+	std::vector<VL_variable>* VL_file::getList() {
+		return &this->V_list;
+	}
+
+	std::string VL_file::getName() {
+		return this->filename;
+	}
+
 	std::string VL_file::getValue(const std::string& name) {
 		for (int i = 0; i < V_list.size(); i++) {
 			if (V_list[i].title == name)
@@ -95,6 +110,10 @@ namespace VL {
 	// ======================= HANDLER =======================
 
 	// utility functions
+	std::vector<VL_variable>* VL_Handler::getList() {
+		return &this->V_list;
+	}
+
 	void VL_Handler::add(VL_variable* variable) {
 		V_list.push_back(*variable);
 	}

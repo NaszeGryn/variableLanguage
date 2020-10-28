@@ -21,15 +21,16 @@ namespace VL {
 	class VL_file {
 	public:
 		//constructor
-		VL_file(const std::string& VL_S_Location) {
-			this->load(VL_S_Location);
+		VL_file(const std::string& VL_S_Location, const std::string& Name = "") {
+			this->load(VL_S_Location, Name);
 		}
 
 		// interpreter
-		void load(const std::string& VL_S_Location);
+		void load(const std::string& VL_S_Location, const std::string& Name = "");
 
 
 		// ---- search functions ---- 
+		std::string getName();
 
 		std::string getValue(const std::string& name);
 
@@ -40,8 +41,10 @@ namespace VL {
 		VL_variable* getVariable(int index);
 		VL_variable* getVariable(const std::string& name);
 
+		std::vector<VL_variable>* getList();
 	public:
 		std::vector<VL_variable> V_list;
+		std::string filename;
 	};
 
 	// combines variables from file to variable list
@@ -104,7 +107,7 @@ namespace VL {
 		VL_variable* getVariable(const std::string& name);
 
 
-
+		std::vector<VL_variable>* getList();
 	public:
 		std::vector<VL_variable> V_list;
 	};
@@ -132,4 +135,20 @@ namespace VL {
 
 		stream.close();
 	}
+
+	class VL_FileHandler {
+	public:
+		VL_FileHandler();
+		~VL_FileHandler();
+
+		void addFile(VL_file& file);
+		void addFile(const std::string& VL_S_Location, const std::string& Name = "");
+
+		VL_file* getFile(const std::string& name);
+		VL_file* getFile(int index);
+
+		std::vector<VL_file>* getList();
+	private:
+		std::vector<VL_file> files;
+	};
 }
