@@ -1,2 +1,2 @@
 # variableLanguage
-Simple language
+prosty język
