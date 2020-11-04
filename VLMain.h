@@ -55,7 +55,7 @@ namespace VL {
 			for (int j = 0; j < V_list->size(); j++) {
 				if ((*V_list)[i].title == file->V_list[j].title) {
 					(*V_list)[i].value = file->V_list[j].value;
-					i = true;
+					repeat = true;
 				}
 
 			}
