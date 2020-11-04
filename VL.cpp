@@ -48,7 +48,7 @@ namespace VL {
 								for (int i = 0; i < this->V_list.size(); i++) {
 									if (this->V_list[i].title == l_name) {
 										this->V_list[i].value = l_value;
-										i = true;
+										repeat = true;
 									}
 									
 								}
