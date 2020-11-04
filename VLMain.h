@@ -50,6 +50,20 @@ namespace VL {
 	// combines variables from file to variable list
 	static void combine(std::vector<VL_variable>* V_list, VL_file* file) {
 		for (int i = 0; i < file->V_list.size(); i++) {
+
+			bool repeat = 0;
+			for (int j = 0; j < V_list->size(); j++) {
+				if ((*V_list)[i].title == file->V_list[j].title) {
+					(*V_list)[i].value = file->V_list[j].value;
+					i = true;
+				}
+
+			}
+
+			if (!repeat) {
+				V_list->push_back(file->V_list[i]);
+			}
+
 			V_list->push_back(file->V_list[i]);
 		}
 	}

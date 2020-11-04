@@ -1,7 +1,7 @@
 #include "VLMain.h"
 
 namespace VL {
-	void VL_file::load(const std::string& VL_S_Location, const std::string& Name = "") {
+	void VL_file::load(const std::string& VL_S_Location, const std::string& Name) {
 		std::vector<std::string>* a = new std::vector<std::string>();
 		std::fstream stream;
 		if (Name == "") {
@@ -43,11 +43,26 @@ namespace VL {
 								int eqPos = strcspn(line.c_str(), "=");
 								l_name = line.substr(0, eqPos);
 								l_value = line.substr(eqPos + 1, line.size() - (eqPos + 1));
+								
+								bool repeat = 0;
+								for (int i = 0; i < this->V_list.size(); i++) {
+									if (this->V_list[i].title == l_name) {
+										this->V_list[i].value = l_value;
+										i = true;
+									}
+									
+								}
+
+								if (!repeat) {
+									V_list.push_back(VL_variable(l_name, l_value));
+								}
+
+								
 							}
 							else {
 								l_name = line;
+								V_list.push_back(VL_variable(l_name, l_value));
 							}
-							V_list.push_back(VL_variable(l_name, l_value));
 						}
 					}
 				}
