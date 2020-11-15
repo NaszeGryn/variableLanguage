@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
-
+#include <iostream>
 namespace VL {
 	// Variable struct
 	struct VL_variable {
@@ -28,7 +28,6 @@ namespace VL {
 		// interpreter
 		void load(const std::string& VL_S_Location, const std::string& Name = "");
 
-
 		// ---- search functions ---- 
 		std::string getName();
 
@@ -45,6 +44,7 @@ namespace VL {
 	public:
 		std::vector<VL_variable> V_list;
 		std::string filename;
+		
 	};
 
 	// combines variables from file to variable list
@@ -53,8 +53,8 @@ namespace VL {
 
 			bool repeat = 0;
 			for (int j = 0; j < V_list->size(); j++) {
-				if ((*V_list)[i].title == file->V_list[j].title) {
-					(*V_list)[i].value = file->V_list[j].value;
+				if ((*V_list)[j].title == file->V_list[i].title) {
+					(*V_list)[j].value = file->V_list[i].value;
 					repeat = true;
 				}
 
@@ -63,8 +63,6 @@ namespace VL {
 			if (!repeat) {
 				V_list->push_back(file->V_list[i]);
 			}
-
-			V_list->push_back(file->V_list[i]);
 		}
 	}
 
@@ -104,10 +102,10 @@ namespace VL {
 		void addFromFile(const std::string& VL_S_Location) {
 			VL_file* tempFile = new VL_file(VL_S_Location);
 			VL::combine(&V_list, tempFile);
-
 			delete tempFile;
 			tempFile = NULL;
 		}
+
 
 		// adds variable
 		void add(VL_variable* variable);
@@ -123,6 +121,7 @@ namespace VL {
 
 		std::vector<VL_variable>* getList();
 	public:
+
 		std::vector<VL_variable> V_list;
 	};
 
