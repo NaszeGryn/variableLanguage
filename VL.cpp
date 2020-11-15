@@ -2,6 +2,7 @@
 
 namespace VL {
 	void VL_file::load(const std::string& VL_S_Location, const std::string& Name) {
+	
 		std::vector<std::string>* a = new std::vector<std::string>();
 		std::fstream stream;
 		if (Name == "") {
@@ -22,7 +23,6 @@ namespace VL {
 			for (int i = 0; i < a->size(); i++) {
 
 				std::string line = (*a)[i];
-
 				std::string l_name = "";
 
 				std::string l_value = "";
@@ -42,25 +42,21 @@ namespace VL {
 							if (line.find('=') < line.length()) {
 								int eqPos = strcspn(line.c_str(), "=");
 								l_name = line.substr(0, eqPos);
-								l_value = line.substr(eqPos + 1, line.size() - (eqPos + 1));
-								
-								bool repeat = 0;
-								for (int i = 0; i < this->V_list.size(); i++) {
-									if (this->V_list[i].title == l_name) {
-										this->V_list[i].value = l_value;
-										repeat = true;
-									}
-									
-								}
-
-								if (!repeat) {
-									V_list.push_back(VL_variable(l_name, l_value));
-								}
-
-								
+								l_value = line.substr(eqPos + 1, line.size() - (eqPos + 1));								
 							}
 							else {
 								l_name = line;
+							}
+							bool repeat = 0;
+							for (int j = 0; j < this->V_list.size(); j++) {
+								if (this->V_list[j].title == l_name) {
+									// podmiana wartosci
+									this->V_list[j].value = l_value;
+									repeat = true;
+								}
+
+							}
+							if (!repeat) {
 								V_list.push_back(VL_variable(l_name, l_value));
 							}
 						}
@@ -75,8 +71,6 @@ namespace VL {
 		delete a;
 		a = NULL;
 	}
-
-
 	// ----- search functions -----
 
 	std::vector<VL_variable>* VL_file::getList() {
@@ -124,13 +118,17 @@ namespace VL {
 
 	// ======================= HANDLER =======================
 
+
+
 	// utility functions
 	std::vector<VL_variable>* VL_Handler::getList() {
 		return &this->V_list;
 	}
 
 	void VL_Handler::add(VL_variable* variable) {
+		bool sorted = false;
 		V_list.push_back(*variable);
+		
 	}
 
 	std::string VL_Handler::getValue(const std::string& name) {
@@ -167,4 +165,6 @@ namespace VL {
 		}
 		return NULL;
 	}
+
+
 }
